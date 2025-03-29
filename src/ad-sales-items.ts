@@ -1,20 +1,20 @@
 import {
-  AdExpect,
-  AdModule,
-  AdModules,
-  AdRegBased,
-  AdRegCalls,
-  AdRegister,
-  AdRegistier,
-  AdSelect,
-  AdTools,
+    AdExpect,
+    AdModule,
+    AdModules,
+    AdRegBased,
+    AdRegCalls,
+    AdRegister,
+    AdRegistier,
+    AdSelect,
+    AdTools,
 } from "admister";
 import { Qine } from "qin_case";
 import { QinNature } from "qin_soul";
 import { registier as regPrices } from "./ad-prices";
 import { registier as regSales } from "./ad-sales";
 
-const base = Qine.qinpel.chief.loadConfig(Qine.qinpel.our.names.QinBaseSelected);
+const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
 export const registry = AdModules.SALES_ITEMS.registry;
 
@@ -77,7 +77,7 @@ export class AdSalesItems extends AdRegister {
                     this.prepare();
                 })
                 .catch((err) =>
-                    this.qinpel.jobbed.showError(err, "{qia_ad_sales}(ErrCode-000007)")
+                    this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000007)")
                 );
         } else {
             this.prepare();
@@ -140,7 +140,7 @@ export class AdSalesItems extends AdRegister {
                     this._updateValues(null);
                 })
                 .catch((err) =>
-                    this.qinpel.jobbed.showError(err, "{qia_ad_sales}(ErrCode-000006)")
+                    this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000006)")
                 );
         }
         this._productPriorValue = produto;

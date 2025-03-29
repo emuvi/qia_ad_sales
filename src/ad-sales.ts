@@ -1,17 +1,17 @@
 import {
-  AdExpect,
-  AdModule,
-  AdModules,
-  AdRegBased,
-  AdRegister,
-  AdRegistier,
-  AdScope,
-  AdTools,
+    AdExpect,
+    AdModule,
+    AdModules,
+    AdRegBased,
+    AdRegister,
+    AdRegistier,
+    AdScope,
+    AdTools,
 } from "admister";
 import { QinButton, QinLabel, Qine } from "qin_case";
 import { QinAction } from "qin_soul";
 
-const base = Qine.qinpel.chief.loadConfig(Qine.qinpel.our.names.QinBaseSelected);
+const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
 export const registry = AdModules.SALES.registry;
 
@@ -37,7 +37,7 @@ export class AdSales extends AdRegister {
     private _qinEnviar = new QinButton({ label: new QinLabel("Enviar") });
     private _actEnviar: QinAction = (_) => {
         if (!this.hasSelectedNoticed()) {
-            this.qinpel.jobbed.showError(
+            this.qinpel.frame.showError(
                 "You must have a selected sales to send.",
                 "{qia_ad_sales}(ErrCode-000003)"
             );
@@ -50,7 +50,7 @@ export class AdSales extends AdRegister {
                 args: [base, codigo],
             })
             .then((token) => {
-                this.qinpel.talk.issued
+                this.qinpel.talk.utils.issued
                     .askWhenDone({
                         token,
                         askHasOut: true,
@@ -61,23 +61,23 @@ export class AdSales extends AdRegister {
                     .then((results) => {
                         this.tryRefresh();
                         if (results.hasOut) {
-                            this.qinpel.jobbed.showInfo(
+                            this.qinpel.frame.showInfo(
                                 results.outLines,
                                 "{qia_ad_sales}(ErrCode-000005)"
                             );
                         }
                         if (results.hasErr) {
-                            this.qinpel.jobbed.showError(
+                            this.qinpel.frame.showError(
                                 results.errLines,
                                 "{qia_ad_sales}(ErrCode-000004)"
                             );
                         }
                     })
                     .catch((err) =>
-                        this.qinpel.jobbed.showError(err, "{qia_ad_sales}(ErrCode-000002)")
+                        this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000002)")
                     );
             })
-            .catch((err) => this.qinpel.jobbed.showError(err, "{qia_ad_sales}(ErrCode-000001)"));
+            .catch((err) => this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000001)"));
     };
 
     public constructor(module: AdModule, expect: AdExpect) {
