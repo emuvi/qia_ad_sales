@@ -46,7 +46,7 @@ export class AdSales extends AdRegister {
         const codigo = this.model.getFieldByName("codigo").value;
         this.qinpel.talk.giz
             .run({
-                exec: "adsales/ad-sales-send.giz",
+                exec: "adsales/send-sale.giz",
                 args: [base, codigo],
             })
             .then((token) => {
