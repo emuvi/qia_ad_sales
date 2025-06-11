@@ -5,23 +5,23 @@ import {
     AdRegBased,
     AdRegCalls,
     AdRegister,
-    AdRegistier,
+    AdRegistry,
     AdSelect,
     AdTools,
 } from "admister";
 import { Qine } from "qin_case";
 import { QinNature } from "qin_soul";
-import { registier as regPrices } from "./ad-prices";
-import { registier as regSales } from "./ad-sales";
+import { registry as regPrices } from "./ad-prices";
+import { registry as regSales } from "./ad-sales";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
-export const registry = AdModules.SALES_ITEMS.registry;
+export const tableHead = AdModules.SALES_ITEMS.tableHead;
 
-export const registier: AdRegistier = { base, registry };
+export const registry: AdRegistry = { base, tableHead };
 
 export const regBased: AdRegBased = {
-    registier,
+    registry,
     joins: [
         {
             module: AdModules.PRODUCTS,

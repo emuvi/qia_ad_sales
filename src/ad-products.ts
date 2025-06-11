@@ -4,7 +4,7 @@ import {
   AdModules,
   AdRegBased,
   AdRegister,
-  AdRegistier,
+  AdRegistry,
   AdScope,
   AdTools,
 } from "admister";
@@ -12,12 +12,12 @@ import { Qine } from "qin_case";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
-export const registry = AdModules.PRODUCTS.registry;
+export const tableHead = AdModules.PRODUCTS.tableHead;
 
-export const registier: AdRegistier = { base, registry };
+export const registry: AdRegistry = { base, tableHead };
 
 export const regBased: AdRegBased = {
-    registier,
+    registry,
     joins: [
         {
             module: AdModules.PRODUCTS_GROUP,

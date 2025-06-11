@@ -4,18 +4,18 @@ import {
     AdModules,
     AdRegBased,
     AdRegister,
-    AdRegistier,
+    AdRegistry,
     AdTools,
 } from "admister";
 import { Qine } from "qin_case";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
-export const registry = AdModules.PAYMENT_TERMS.registry;
+export const tableHead = AdModules.PAYMENT_TERMS.tableHead;
 
-export const registier: AdRegistier = { base, registry };
+export const registry: AdRegistry = { base, tableHead };
 
-export const regBased: AdRegBased = { registier };
+export const regBased: AdRegBased = { registry };
 
 export class AdPaymentTerms extends AdRegister {
     public constructor(module: AdModule, expect: AdExpect) {
