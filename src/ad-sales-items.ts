@@ -1,16 +1,6 @@
-import {
-    AdExpect,
-    AdModule,
-    AdModules,
-    AdRegBased,
-    AdRegCalls,
-    AdRegister,
-    AdRegistry,
-    AdSelect,
-    AdTools,
-} from "admister";
+import { AdExpect, AdModule, AdModules, AdRegBased, AdRegCalls, AdRegister, AdSelect, AdTools } from "admister";
 import { Qine } from "qin_case";
-import { QinNature } from "qin_soul";
+import { Nature, Registry } from "qin_soul";
 import { registry as regPrices } from "./ad-prices";
 import { registry as regSales } from "./ad-sales";
 
@@ -18,15 +8,15 @@ const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELE
 
 export const tableHead = AdModules.SALES_ITEMS.tableHead;
 
-export const registry: AdRegistry = { base, tableHead };
+export const registry: Registry = { base, tableHead };
 
 export const regBased: AdRegBased = {
     registry,
-    joins: [
+    joinList: [
         {
             module: AdModules.PRODUCTS,
             alias: "products",
-            filters: [{ linked: { name: "produto", with: "codigo" } }],
+            filterList: [{ linked: { name: "produto", upon: "codigo" } }],
         },
     ],
 };
@@ -42,28 +32,28 @@ export class AdSalesItems extends AdRegister {
                 .putOnChanged(this._updatePrice)
                 .putOnExited(this._updatePrice),
             AdTools.newAdFieldString("products.nome", "Produto - Nome.", 60),
-            AdTools.newAdFieldNumeric("quantidade", "Quantidade").putOnExited(this._updateValues),
+            AdTools.newAdFieldNumeric("quantidade", "Quantidade")
+                .putOnExited(this._updateValues),
             AdTools.newAdFieldString("tabela", "Tabela", 6)
                 .putOnEntered(this._tablePriorValueSaver)
                 .putOnChanged(this._updatePrice)
                 .putOnExited(this._updatePrice),
-            AdTools.newAdFieldNumeric("preco", "Preço").putOnExited(this._updateValues),
+            AdTools.newAdFieldNumeric("preco", "Preço")
+                .putOnExited(this._updateValues),
             AdTools.newAdFieldNumeric("subtotal", "SubTotal").putReadOnly(),
-            AdTools.newAdFieldNumeric("desconto_per", "% Desconto").putOnExited(
-                this._updateValues
-            ),
+            AdTools.newAdFieldNumeric("desconto_per", "% Desconto")
+                .putOnExited(this._updateValues),
             AdTools.newAdFieldNumeric("desconto", "Desconto").putReadOnly(),
-            AdTools.newAdFieldNumeric("acrescimo_per", "% Acréscimo").putOnExited(
-                this._updateValues
-            ),
+            AdTools.newAdFieldNumeric("acrescimo_per", "% Acréscimo")
+                .putOnExited(this._updateValues),
             AdTools.newAdFieldNumeric("acrescimo", "Acréscimo").putReadOnly(),
             AdTools.newAdFieldNumeric("total", "Total").putReadOnly(),
             AdTools.newAdFieldString("obs", "Obs", 100),
         ]);
         let fixedPrepedido = null;
         if (expect) {
-            if (expect.fixed) {
-                for (const fixed of expect.fixed) {
+            if (expect.fixedList) {
+                for (const fixed of expect.fixedList) {
                     if (fixed.name === "prepedido") {
                         fixedPrepedido = fixed.data;
                     }
@@ -76,9 +66,7 @@ export class AdSalesItems extends AdRegister {
                     this.model.getFieldByName("tabela").defaultValue = res;
                     this.prepare();
                 })
-                .catch((err) =>
-                    this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000007)")
-                );
+                .catch((err) => this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000007)"));
         } else {
             this.prepare();
         }
@@ -139,9 +127,7 @@ export class AdSalesItems extends AdRegister {
                     this.model.getFieldByName("preco").value = res;
                     this._updateValues(null);
                 })
-                .catch((err) =>
-                    this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000006)")
-                );
+                .catch((err) => this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000006)"));
         }
         this._productPriorValue = produto;
         this._tablePriorValue = tabela;
@@ -149,22 +135,22 @@ export class AdSalesItems extends AdRegister {
 
     private makeSelectClientTableQuery(prepedido: any): AdSelect {
         return {
-            registier: regSales,
-            fields: [{ name: "clients.tabela_preco", type: QinNature.CHARS }],
-            joins: [
+            registry: regSales,
+            fieldList: [{ name: "clients.tabela_preco", type: Nature.CHARS }],
+            joinList: [
                 {
                     module: AdModules.CLIENTS,
                     alias: "clients",
-                    filters: [{ linked: { name: "cliente", with: "codigo" } }],
+                    filterList: [{ linked: { name: "cliente", upon: "codigo" } }],
                 },
             ],
-            filters: [
-                {
-                    valued: {
-                        name: "codigo",
-                        type: QinNature.CHARS,
-                        data: prepedido,
-                    },
+            filterList: [
+                { 
+                    valued: { 
+                        name: "codigo", 
+                        type: Nature.CHARS, 
+                        data: prepedido, 
+                    } 
                 },
             ],
         };
@@ -172,20 +158,20 @@ export class AdSalesItems extends AdRegister {
 
     private makeSelectPriceQuery(produto: any, tabela: any): AdSelect {
         return {
-            registier: regPrices,
-            fields: [{ name: "valor", type: QinNature.NUMERIC }],
-            filters: [
+            registry: regPrices,
+            fieldList: [{ name: "valor", type: Nature.NUMERIC }],
+            filterList: [
                 {
                     valued: {
                         name: "produto",
-                        type: QinNature.CHARS,
+                        type: Nature.CHARS,
                         data: produto,
                     },
                 },
                 {
                     valued: {
                         name: "tabela",
-                        type: QinNature.CHARS,
+                        type: Nature.CHARS,
                         data: tabela,
                     },
                 },

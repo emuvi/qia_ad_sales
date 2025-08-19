@@ -1,58 +1,51 @@
-import {
-    AdExpect,
-    AdModule,
-    AdModules,
-    AdRegBased,
-    AdRegister,
-    AdRegistry,
-    AdTools,
-} from "admister";
+import { AdExpect, AdModule, AdModules, AdRegBased, AdRegister, AdTools } from "admister";
 import { Qine } from "qin_case";
+import { Registry } from "qin_soul";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
 export const tableHead = AdModules.CLIENTS.tableHead;
 
-export const registry: AdRegistry = { base, tableHead };
+export const registry: Registry = { base, tableHead };
 
 export const regBased: AdRegBased = {
     registry,
-    joins: [
+    joinList: [
         {
             module: AdModules.PEOPLE_GROUP,
             alias: "people_group",
-            filters: [{ linked: { name: "grupo", with: "codigo" } }],
+            filterList: [{ linked: { name: "grupo", upon: "codigo" } }],
         },
         {
             module: AdModules.PEOPLE_SUBGROUP,
             alias: "people_subgroup",
-            filters: [
-                { linked: { name: "grupo", with: "grupo" } },
-                { linked: { name: "subgrupo", with: "codigo" } },
+            filterList: [
+                { linked: { name: "grupo", upon: "grupo" } },
+                { linked: { name: "subgrupo", upon: "codigo" } },
             ],
         },
         {
             module: AdModules.CITY,
             alias: "city",
-            filters: [{ linked: { name: "cidade", with: "codigo" } }],
+            filterList: [{ linked: { name: "cidade", upon: "codigo" } }],
         },
         {
             module: AdModules.DISTRICT,
             alias: "district",
-            filters: [
-                { linked: { name: "cidade", with: "cidade" } },
-                { linked: { name: "bairro", with: "codigo" } },
+            filterList: [
+                { linked: { name: "cidade", upon: "cidade" } },
+                { linked: { name: "bairro", upon: "codigo" } },
             ],
         },
         {
             module: AdModules.REGION,
             alias: "region",
-            filters: [{ linked: { name: "regiao", with: "codigo" } }],
+            filterList: [{ linked: { name: "regiao", upon: "codigo" } }],
         },
         {
             module: AdModules.PAYMENT_TERMS,
             alias: "payment_terms",
-            filters: [{ linked: { name: "cond_pagamento", with: "codigo" } }],
+            filterList: [{ linked: { name: "cond_pagamento", upon: "codigo" } }],
         },
     ],
 };
@@ -77,72 +70,30 @@ export class AdClients extends AdRegister {
         this.addField(AdTools.newAdFieldString("people_subgroup.nome", "SubGrupo - Nome", 60));
         this.addField(AdTools.newAdFieldString("obs", "Obs", 120));
         this.addTab("Contato");
-        this.addField(
-            AdTools.newAdFieldSuggestion("tratamento", "Tratamento", 18, tratamentoSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tratamento", "Tratamento", 18, tratamentoSuggestions));
         this.addField(AdTools.newAdFieldString("contato", "Contato", 45));
         this.addField(AdTools.newAdFieldString("cargo", "Cargo", 40));
         this.addField(AdTools.newAdFieldDate("contato_aniversario", "Cont. Aniversário"));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_fone1", "Tipo Tel 1", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_fone1", "Tipo Tel 1", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("fone1", "Telefone 1", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_fone2", "Tipo Tel 2", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_fone2", "Tipo Tel 2", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("fone2", "Telefone 2", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_fone3", "Tipo Tel 3", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_fone3", "Tipo Tel 3", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("fone3", "Telefone 3", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_email1", "Tipo EMail 1", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_email1", "Tipo EMail 1", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("email1", "EMail 1", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_email2", "Tipo EMail 2", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_email2", "Tipo EMail 2", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("email2", "EMail 2", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion("tipo_email3", "Tipo EMail 3", 18, typeContactSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_email3", "Tipo EMail 3", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("email3", "EMail 3", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion(
-                "tipo_website1",
-                "Tipo WebSite 1",
-                18,
-                typeContactSuggestions
-            )
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_website1", "Tipo WebSite 1", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("website1", "WebSite 1", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion(
-                "tipo_website2",
-                "Tipo WebSite 2",
-                18,
-                typeContactSuggestions
-            )
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_website2", "Tipo WebSite 2", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("website2", "WebSite 2", 25));
-        this.addField(
-            AdTools.newAdFieldSuggestion(
-                "tipo_website3",
-                "Tipo WebSite 3",
-                18,
-                typeContactSuggestions
-            )
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_website3", "Tipo WebSite 3", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("website3", "WebSite 3", 25));
         this.addTab("Endereço");
-        this.addField(
-            AdTools.newAdFieldSuggestion(
-                "tipo_endereco",
-                "Tipo Endereço",
-                18,
-                typeContactSuggestions
-            )
-        );
+        this.addField(AdTools.newAdFieldSuggestion("tipo_endereco", "Tipo Endereço", 18, typeContactSuggestions));
         this.addField(AdTools.newAdFieldString("cep", "CEP", 10));
         this.addField(AdTools.newAdFieldString("cidade", "Cidade - Cód.", 6));
         this.addField(AdTools.newAdFieldString("city.nome", "Cidade - Nome", 60));
@@ -152,9 +103,7 @@ export class AdClients extends AdRegister {
         this.addField(AdTools.newAdFieldString("district.nome", "Bairro - Nome", 60));
         this.addField(AdTools.newAdFieldString("regiao", "Região - Cód.", 4));
         this.addField(AdTools.newAdFieldString("region.nome", "Região - Nome", 60));
-        this.addField(
-            AdTools.newAdFieldSuggestion("logradouro", "Logradouro", 10, typeStreetSuggestions)
-        );
+        this.addField(AdTools.newAdFieldSuggestion("logradouro", "Logradouro", 10, typeStreetSuggestions));
         this.addField(AdTools.newAdFieldString("endereco", "Endereço", 80));
         this.addField(AdTools.newAdFieldString("numero", "Número", 10));
         this.addField(AdTools.newAdFieldString("complemento", "Complemento", 50));

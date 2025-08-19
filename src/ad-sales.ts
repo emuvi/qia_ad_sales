@@ -1,34 +1,25 @@
-import {
-    AdExpect,
-    AdModule,
-    AdModules,
-    AdRegBased,
-    AdRegister,
-    AdRegistry,
-    AdScope,
-    AdTools,
-} from "admister";
+import { AdExpect, AdModule, AdModules, AdRegBased, AdRegister, AdScope, AdTools } from "admister";
 import { QinButton, QinLabel, Qine } from "qin_case";
-import { QinAction } from "qin_soul";
+import { QinAction, Registry } from "qin_soul";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
 export const tableHead = AdModules.SALES.tableHead;
 
-export const registry: AdRegistry = { base, tableHead };
+export const registry: Registry = { base, tableHead };
 
 export const regBased: AdRegBased = {
     registry,
-    joins: [
+    joinList: [
         {
             module: AdModules.CLIENTS,
             alias: "clients",
-            filters: [{ linked: { name: "cliente", with: "codigo" } }],
+            filterList: [{ linked: { name: "cliente", upon: "codigo" } }],
         },
         {
             module: AdModules.PAYMENT_TERMS,
             alias: "payment_terms",
-            filters: [{ linked: { name: "cond_pagamento", with: "codigo" } }],
+            filterList: [{ linked: { name: "cond_pagamento", upon: "codigo" } }],
         },
     ],
 };
@@ -37,20 +28,17 @@ export class AdSales extends AdRegister {
     private _qinEnviar = new QinButton({ label: new QinLabel("Enviar") });
     private _actEnviar: QinAction = (_) => {
         if (!this.hasSelectedNoticed()) {
-            this.qinpel.frame.showError(
-                "You must have a selected sales to send.",
-                "{qia_ad_sales}(ErrCode-000003)"
-            );
+            this.qinpel.frame.showError("You must have a selected sales to send.", "{qia_ad_sales}(ErrCode-000003)");
             return;
         }
         const codigo = this.model.getFieldByName("codigo").value;
         this.qinpel.talk.giz
             .run({
-                exec: "adsales/send-sale.giz",
+                name: "adsales/send-sale.giz",
                 args: [base, codigo],
             })
             .then((token) => {
-                this.qinpel.talk.utils.issued
+                this.qinpel.talk.utl.aux
                     .askWhenDone({
                         token,
                         askHasOut: true,
@@ -61,21 +49,13 @@ export class AdSales extends AdRegister {
                     .then((results) => {
                         this.tryRefresh();
                         if (results.hasOut) {
-                            this.qinpel.frame.showInfo(
-                                results.outLines,
-                                "{qia_ad_sales}(ErrCode-000005)"
-                            );
+                            this.qinpel.frame.showInfo(results.outLines, "{qia_ad_sales}(ErrCode-000005)");
                         }
                         if (results.hasErr) {
-                            this.qinpel.frame.showError(
-                                results.errLines,
-                                "{qia_ad_sales}(ErrCode-000004)"
-                            );
+                            this.qinpel.frame.showError(results.errLines, "{qia_ad_sales}(ErrCode-000004)");
                         }
                     })
-                    .catch((err) =>
-                        this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000002)")
-                    );
+                    .catch((err) => this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000002)"));
             })
             .catch((err) => this.qinpel.frame.showError(err, "{qia_ad_sales}(ErrCode-000001)"));
     };
@@ -101,8 +81,8 @@ export class AdSales extends AdRegister {
         this.addDetail({
             setup: {
                 module: AdModules.SALES_ITEMS,
-                scopes: [AdScope.ALL],
-                filters: [{ linked: { name: "prepedido", with: "codigo" } }],
+                scopeList: [AdScope.ALL],
+                filterList: [{ linked: { name: "prepedido", upon: "codigo" } }],
             },
             title: "Itens",
         });

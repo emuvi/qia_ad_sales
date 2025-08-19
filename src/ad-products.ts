@@ -1,35 +1,27 @@
-import {
-  AdExpect,
-  AdModule,
-  AdModules,
-  AdRegBased,
-  AdRegister,
-  AdRegistry,
-  AdScope,
-  AdTools,
-} from "admister";
+import { AdExpect, AdModule, AdModules, AdRegBased, AdRegister, AdScope, AdTools } from "admister";
 import { Qine } from "qin_case";
+import { Registry } from "qin_soul";
 
 const base = Qine.qinpel.window.loadConfig(Qine.qinpel.ours.consts.QIN_BASE_SELECTED);
 
 export const tableHead = AdModules.PRODUCTS.tableHead;
 
-export const registry: AdRegistry = { base, tableHead };
+export const registry: Registry = { base, tableHead };
 
 export const regBased: AdRegBased = {
     registry,
-    joins: [
+    joinList: [
         {
             module: AdModules.PRODUCTS_GROUP,
             alias: "products_group",
-            filters: [{ linked: { name: "grupo", with: "codigo" } }],
+            filterList: [{ linked: { name: "grupo", upon: "codigo" } }],
         },
         {
             module: AdModules.PRODUCTS_SUBGROUP,
             alias: "products_subgroup",
-            filters: [
-                { linked: { name: "grupo", with: "grupo" } },
-                { linked: { name: "subgrupo", with: "codigo" } },
+            filterList: [
+                { linked: { name: "grupo", upon: "grupo" } },
+                { linked: { name: "subgrupo", upon: "codigo" } },
             ],
         },
     ],
@@ -49,8 +41,8 @@ export class AdProducts extends AdRegister {
         this.addDetail({
             setup: {
                 module: AdModules.PRICES,
-                scopes: [AdScope.ALL],
-                filters: [{ linked: { name: "produto", with: "codigo" } }],
+                scopeList: [AdScope.ALL],
+                filterList: [{ linked: { name: "produto", upon: "codigo" } }],
             },
         });
         this.prepare();
