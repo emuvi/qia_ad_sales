@@ -22,9 +22,9 @@ export const regBased: AdRegBased = {
 export class AdPrices extends AdRegister {
     public constructor(module: AdModule, expect: AdExpect) {
         super(module, expect, regBased);
-        this.addField(AdTools.newAdFieldString("produto", "Produto - Cód.", 6).putKey());
-        this.addField(AdTools.newAdFieldString("products.nome", "Produto - Nome.", 60));
-        this.addField(AdTools.newAdFieldString("tabela", "Tabela", 6).putKey());
+        this.addField(AdTools.newAdFieldChars("produto", "Produto - Cód.", 6).putKey());
+        this.addField(AdTools.newAdFieldChars("products.nome", "Produto - Nome.", 60));
+        this.addField(AdTools.newAdFieldChars("tabela", "Tabela", 6).putKey());
         this.addField(AdTools.newAdFieldNumeric("valor", "Valor"));
         this.prepare();
     }

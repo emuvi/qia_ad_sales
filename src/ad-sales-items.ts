@@ -25,16 +25,16 @@ export class AdSalesItems extends AdRegister {
     public constructor(module: AdModule, expect: AdExpect) {
         super(module, expect, regBased);
         this.addFields([
-            AdTools.newAdFieldString("prepedido", "PréPedido", 10).putKey().putReadOnly(),
-            AdTools.newAdFieldString("codigo", "Código", 4).putKey(),
-            AdTools.newAdFieldString("produto", "Produto - Cód.", 6)
+            AdTools.newAdFieldChars("prepedido", "PréPedido", 10).putKey().putReadOnly(),
+            AdTools.newAdFieldChars("codigo", "Código", 4).putKey(),
+            AdTools.newAdFieldChars("produto", "Produto - Cód.", 6)
                 .putOnEntered(this._productPriorValueSaver)
                 .putOnChanged(this._updatePrice)
                 .putOnExited(this._updatePrice),
-            AdTools.newAdFieldString("products.nome", "Produto - Nome.", 60),
+            AdTools.newAdFieldChars("products.nome", "Produto - Nome.", 60),
             AdTools.newAdFieldNumeric("quantidade", "Quantidade")
                 .putOnExited(this._updateValues),
-            AdTools.newAdFieldString("tabela", "Tabela", 6)
+            AdTools.newAdFieldChars("tabela", "Tabela", 6)
                 .putOnEntered(this._tablePriorValueSaver)
                 .putOnChanged(this._updatePrice)
                 .putOnExited(this._updatePrice),
@@ -48,7 +48,7 @@ export class AdSalesItems extends AdRegister {
                 .putOnExited(this._updateValues),
             AdTools.newAdFieldNumeric("acrescimo", "Acréscimo").putReadOnly(),
             AdTools.newAdFieldNumeric("total", "Total").putReadOnly(),
-            AdTools.newAdFieldString("obs", "Obs", 100),
+            AdTools.newAdFieldChars("obs", "Obs", 100),
         ]);
         let fixedPrepedido = null;
         if (expect) {
