@@ -2,18 +2,17 @@ base = args[0]
 codigoPrePedido = args[1]
 
 import java.text.DecimalFormat
+
 numberFormat = new DecimalFormat('#0.000')
 
 def formatField(fieldValue) {
-  if (fieldValue != null) {
-    if (fieldValue instanceof BigDecimal) {
-      return numberFormat.format(fieldValue)
-    } else {
-      return fieldValue.toString()
+    if (fieldValue != null) {
+        if (fieldValue instanceof BigDecimal) {
+            return numberFormat.format(fieldValue)
+        }
+        return fieldValue.toString()
     }
-  } else {
     return ''
-  }
 }
 
 def helped = giz.getHelp(base)
@@ -53,7 +52,7 @@ def dataPrePedido = [
 ]
 
 if (dataPrePedido.enviado == 'S') {
-  throw new Exception('This sales was already sent.')
+    throw new Exception('This sales was already sent.')
 }
 
 def arquivo = StringBuilder.newInstance()
@@ -71,11 +70,11 @@ arquivo << dataPrePedido.out_desc << '\n'
 arquivo << dataPrePedido.out_acresc << '\n'
 arquivo << dataPrePedido.total << '\n'
 
-def selectMobVendedor = "SELECT codigo FROM mobile_vendedores WHERE representante = ?"
+def selectMobVendedor = 'SELECT codigo FROM mobile_vendedores WHERE representante = ?'
 def mobVendedor = helped.selectOne(selectMobVendedor, dataPrePedido.representante)
 
 if (!mobVendedor) {
-  throw new Exception('User is NOT registered on mobile sales.')
+    throw new Exception('User is NOT registered on mobile sales.')
 }
 
 def selectItens = '''
@@ -96,13 +95,13 @@ ORDER BY
 def resultItens = helped.select(selectItens, codigoPrePedido)
 
 if (!resultItens) {
-  throw new Exception('It is not allowed to send a sales without items.')
+    throw new Exception('It is not allowed to send a sales without items.')
 }
 
 arquivo << '<Itens>' << '\n'
 
 for (item in resultItens) {
-  def dataItem = [
+    def dataItem = [
     produto: formatField(item[0]).replace('-', '_'),
     produtos_nome: formatField(item[1]).replace('-', '_'),
     produtos_unidade: formatField(item[2]).replace('-', '_'),
@@ -115,34 +114,34 @@ for (item in resultItens) {
     obs: formatField(item[9]).replace('-', '_')
   ]
 
-  arquivo << dataItem.produto << '-'
-  arquivo << dataItem.produtos_nome << '-'
-  arquivo << dataItem.produtos_unidade << '-'
-  arquivo << dataItem.quantidade << '-'
-  arquivo << dataItem.preco << '-'
-  arquivo << dataItem.desconto_per << '-'
-  arquivo << dataItem.desconto << '-'
-  arquivo << dataItem.subtotal << '-'
-  arquivo << dataItem.total << '-'
-  arquivo << dataItem.obs << '\n'
+    arquivo << dataItem.produto << '-'
+    arquivo << dataItem.produtos_nome << '-'
+    arquivo << dataItem.produtos_unidade << '-'
+    arquivo << dataItem.quantidade << '-'
+    arquivo << dataItem.preco << '-'
+    arquivo << dataItem.desconto_per << '-'
+    arquivo << dataItem.desconto << '-'
+    arquivo << dataItem.subtotal << '-'
+    arquivo << dataItem.total << '-'
+    arquivo << dataItem.obs << '\n'
 }
 
 arquivo << '</Itens>' << '\n'
 
 try {
-  helped.begin()
+    helped.begin()
 
-  def insertMobArquivos = 'INSERT INTO mobile_arquivos (vendedor, nome, tipo, arquivo) VALUES (?, ?, ?, ?)'
-  helped.update(insertMobArquivos, mobVendedor, codigoPrePedido + '.ped', 'B', arquivo.toString())
+    def insertMobArquivos = 'INSERT INTO mobile_arquivos (vendedor, nome, tipo, arquivo) VALUES (?, ?, ?, ?)'
+    helped.update(insertMobArquivos, mobVendedor, codigoPrePedido + '.ped', 'B', arquivo.toString())
 
-  def updatePrePedidos = "UPDATE prepedidos SET enviado = 'S', enviado_data = CURRENT_DATE, enviado_hora = CURRENT_TIME WHERE codigo = ?"
-  helped.update(updatePrePedidos, codigoPrePedido)
+    def updatePrePedidos = "UPDATE prepedidos SET enviado = 'S', enviado_data = CURRENT_DATE, enviado_hora = CURRENT_TIME WHERE codigo = ?"
+    helped.update(updatePrePedidos, codigoPrePedido)
 
-  helped.commit()
+    helped.commit()
 } catch (Exception e) {
-  helped.rollback()
-  throw e
+    helped.rollback()
+    throw e
 }
 
-print("Sale sent successfully!")
+print('Sale sent successfully!')
 return 0
