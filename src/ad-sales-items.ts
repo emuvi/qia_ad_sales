@@ -136,7 +136,7 @@ export class AdSalesItems extends AdRegister {
     private makeSelectClientTableQuery(prepedido: any): AdSelect {
         return {
             registry: regSales,
-            fieldList: [{ name: "clients.tabela_preco", type: Nature.CHARS }],
+            fieldList: [{ name: "clients.tabela_preco", type: Nature.Chars }],
             joinList: [
                 {
                     module: AdModules.CLIENTS,
@@ -148,7 +148,7 @@ export class AdSalesItems extends AdRegister {
                 { 
                     valued: { 
                         name: "codigo", 
-                        type: Nature.CHARS, 
+                        type: Nature.Chars, 
                         data: prepedido, 
                     } 
                 },
@@ -159,19 +159,19 @@ export class AdSalesItems extends AdRegister {
     private makeSelectPriceQuery(produto: any, tabela: any): AdSelect {
         return {
             registry: regPrices,
-            fieldList: [{ name: "valor", type: Nature.NUMERIC }],
+            fieldList: [{ name: "valor", type: Nature.Numeric }],
             filterList: [
                 {
                     valued: {
                         name: "produto",
-                        type: Nature.CHARS,
+                        type: Nature.Chars,
                         data: produto,
                     },
                 },
                 {
                     valued: {
                         name: "tabela",
-                        type: Nature.CHARS,
+                        type: Nature.Chars,
                         data: tabela,
                     },
                 },

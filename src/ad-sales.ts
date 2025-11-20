@@ -35,7 +35,7 @@ export class AdSales extends AdRegister {
         this.qinpel.talk.giz
             .run({
                 name: "adsales/send-sale.giz",
-                args: [base, codigo],
+                argList: [base, codigo],
             })
             .then((token) => {
                 this.qinpel.talk.utl.aux
